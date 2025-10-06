@@ -35,7 +35,7 @@ const Menubar = ({ onCreateAccountBtnClick }: { onCreateAccountBtnClick: () => v
                     <Image
                         width={38}
                         height={38}
-                        src={userDetails?.imgSrc || "/icons/user.svg"}
+                        src={userDetails?.imgSrc || "/Icons/user.svg"}
                         className='rounded-full bg-black/30 p-1'
                         alt="User Avatar" />
                     <span className='text-[#2E2E2E] text-[16px] font-medium'>{userDetails.name}</span>

@@ -114,7 +114,7 @@ function Post({ _id, postImg, type, title, description, author, views, location,
                 <div className='mt-[32px] flex justify-between'>
                     <div className=' flex items-center justify-start gap-[10px]'>
                         <Image
-                            src={author?.imgSrc ? ('/images/' + author.imgSrc) : '/icons/user.svg'}
+                            src={author?.imgSrc ? ('/images/' + author.imgSrc) : '/Icons/user.svg'}
                             alt=''
                             width={48}
                             height={48}
