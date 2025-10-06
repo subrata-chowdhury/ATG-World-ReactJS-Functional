@@ -14,7 +14,7 @@ const ForgetPassword = () => {
 
     return (
         <div className='flex h-screen'>
-            <div className='flex-1 h-screen bg-black/30 hidden md:block'></div>
+            <div className='flex-1 h-screen bg-black/30 hidden md:flex justify-center items-center text-xl font-semibold'>Reset Your Passowrd</div>
             <div className='flex-1 my-auto mx-auto'>
                 <div className='md:w-[320px] lg:w-[480px] px-5 mx-auto flex flex-col'>
                     <h1 className='font-medium mb-4'>Enter {formState === 'email' ? "Email" : (formState === 'otp' ? "OTP" : "new Password")}</h1>

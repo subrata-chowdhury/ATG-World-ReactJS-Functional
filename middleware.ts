@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
     if (excludeTokenVerification.includes(request.nextUrl.pathname)) {
         return NextResponse.next();
     }
-    if (/^\/api\/posts\/[^\/]+\/comments$/.test(request.nextUrl.pathname)) { // for /api/posts/:id/comments
+    if (/^\/api\/posts\/[^\/]+\/comments$/.test(request.nextUrl.pathname) && request.method==='GET') { // for /api/posts/:id/comments
         return NextResponse.next();
     }
     console.log(request.nextUrl.pathname, request.method);

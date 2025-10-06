@@ -92,9 +92,6 @@ const PostForm = ({ postDetails, setPostDetails, onSubmit, onDelete }: Props) =>
                                                                     color: btn.color
                                                                 });
                                                                 setShowAddBtnPopup(true);
-                                                                // Remove the button being edited from the list temporarily
-                                                                const updatedBtns = postDetails.btns ? postDetails.btns.filter((_, i) => i !== index) : [];
-                                                                setPostDetails({ ...postDetails, btns: updatedBtns });
                                                             }}
                                                         >
                                                             Edit

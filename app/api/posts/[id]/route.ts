@@ -2,6 +2,7 @@ import dbConnect from '@/config/db';
 import Post from '@/models/Post';
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
+import Comment from '@/models/Comments';
 
 
 export async function GET(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -89,7 +90,11 @@ export async function DELETE(req: NextRequest, { params }: { params: Promise<{ i
     await dbConnect();
 
     try {
-        Post.deleteOne({ _id: id, author: userId });
+        const deletedPost = await Post.deleteOne({ _id: id, author: userId });
+        if (deletedPost.deletedCount === 0) {
+            return new NextResponse("Post not found or you're not authorized to delete this post", { status: 500 });
+        }
+        await Comment.deleteMany({ post: id });
         return new NextResponse("Post deleted successfully", { status: 200 })
     } catch (error) {
         console.log(error);
