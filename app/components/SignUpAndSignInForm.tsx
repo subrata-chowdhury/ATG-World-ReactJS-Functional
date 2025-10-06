@@ -11,6 +11,7 @@ const SignUpAndSignInForm = ({ onClose = () => { } }: { onClose?: () => void }) 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
     const { login } = useAuth();
 
     async function onSubmit() {
@@ -52,7 +53,7 @@ const SignUpAndSignInForm = ({ onClose = () => { } }: { onClose?: () => void }) 
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userName', res.user.name);
                     localStorage.setItem('userEmail', res.user.email);
-                    if(res?.user?.imgSrc)
+                    if (res?.user?.imgSrc)
                         localStorage.setItem('userImg', res?.user?.imgSrc);
                     login(res.user);
                     onClose();
@@ -80,7 +81,7 @@ const SignUpAndSignInForm = ({ onClose = () => { } }: { onClose?: () => void }) 
                     localStorage.setItem('isLoggedIn', 'true');
                     localStorage.setItem('userName', res.user.name);
                     localStorage.setItem('userEmail', res.user.email);
-                    if(res?.user?.imgSrc)
+                    if (res?.user?.imgSrc)
                         localStorage.setItem('userImg', res?.user?.imgSrc);
                     login(res.user);
                     onClose();
@@ -110,10 +111,10 @@ const SignUpAndSignInForm = ({ onClose = () => { } }: { onClose?: () => void }) 
                                 </div>}
                                 <input type='text' className={`h-[46px] border-[1px] border-[#D9D9DB] w-full bg-[#F7F8FA] py-[15px] px-[12px] placeholder:text-[#8A8A8A] text-[13px] md:text-[15px] font-medium leading-[16px] outline-0 ${isInSignUpState ? "border-t-0" : ''}`} placeholder='Email' value={email} onChange={e => setEmail(e.target.value)} />
                                 <div className='h-[46px] border-[1px] border-t-0 border-[#D9D9DB] w-full bg-[#F7F8FA] flex justify-between pr-[18px]'>
-                                    <input type='text' className='text-[13px] md:text-[15px] font-medium leading-[16px] placeholder:text-[#8A8A8A] py-[15px] px-[12px] outline-0' placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} />
-                                    <Image src={'/Icons/eye.svg'} width={18} height={18} alt='' />
+                                    <input type={showPassword ? 'text' : 'password'} className='text-[13px] md:text-[15px] font-medium leading-[16px] placeholder:text-[#8A8A8A] py-[15px] px-[12px] outline-0' placeholder='Password' value={password} onChange={e => setPassword(e.target.value)} />
+                                    <Image src={'/Icons/eye.svg'} width={18} height={18} alt='' className='cursor-pointer' onClick={() => setShowPassword(val => !val)} />
                                 </div>
-                                {isInSignUpState && <input type='text' className='h-[46px] rounded-b-[2px] border-t-0 border-[1px] border-[#D9D9DB] w-full bg-[#F7F8FA] py-[15px] px-[12px] placeholder:text-[#8A8A8A] text-[13px] md:text-[15px] font-medium leading-[16px] outline-0' placeholder='Confirm Password' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />}
+                                {isInSignUpState && <input type={showPassword ? 'text' : 'password'} className='h-[46px] rounded-b-[2px] border-t-0 border-[1px] border-[#D9D9DB] w-full bg-[#F7F8FA] py-[15px] px-[12px] placeholder:text-[#8A8A8A] text-[13px] md:text-[15px] font-medium leading-[16px] outline-0' placeholder='Confirm Password' value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />}
                             </div>
                             <div className='flex justify-between items-center'>
                                 <button className='text-[#FFF] text-center text-[13px] md:text-[14px] font-semibold leading-[16px] mt-[19px] mb-[24px] w-[150px] md:w-full flex justify-center items-center h-[40px] rounded-[20px] bg-[#2F6CE5] cursor-pointer' onClick={onSubmit}>{isInSignUpState ? 'Create Account' : 'Sign In'}</button>
