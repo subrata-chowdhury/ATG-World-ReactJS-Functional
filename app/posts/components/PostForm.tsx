@@ -11,6 +11,7 @@ type Props = {
 
 const PostForm = ({ postDetails, setPostDetails, onSubmit, onDelete }: Props) => {
     const [showAddBtnPopup, setShowAddBtnPopup] = useState<boolean>(false);
+    const [editIndex, setEditIndex] = useState<number | null>(null);
     const [btnDetails, setBtnDetails] = useState<{ name: string; link: string; color: string }>({ name: '', link: '', color: '#000000' });
 
     return (
@@ -55,7 +56,7 @@ const PostForm = ({ postDetails, setPostDetails, onSubmit, onDelete }: Props) =>
                         <div>
                             <div className='font-medium flex flex-1 mt-4 text-[#333]'>
                                 Buttons
-                                <div className='bg-[#2F6CE5] rounded text-white px-3 py-1.5 ml-auto cursor-pointer' onClick={() => setShowAddBtnPopup(true)}>Add +</div>
+                                <div className='bg-[#2F6CE5] rounded text-white px-3 py-1.5 ml-auto cursor-pointer' onClick={() => { setBtnDetails({ name: '', link: '', color: '#000000' }); setShowAddBtnPopup(true) }}>Add +</div>
                             </div>
                             {
                                 postDetails.btns && postDetails.btns.length > 0 ? (
@@ -86,12 +87,13 @@ const PostForm = ({ postDetails, setPostDetails, onSubmit, onDelete }: Props) =>
                                                         <span
                                                             className="cursor-pointer ml-4 text-blue-600 font-semibold"
                                                             onClick={() => {
+                                                                setShowAddBtnPopup(true);
                                                                 setBtnDetails({
                                                                     name: btn.name,
                                                                     link: btn.link || '',
                                                                     color: btn.color
                                                                 });
-                                                                setShowAddBtnPopup(true);
+                                                                setEditIndex(index)
                                                             }}
                                                         >
                                                             Edit
@@ -115,9 +117,36 @@ const PostForm = ({ postDetails, setPostDetails, onSubmit, onDelete }: Props) =>
             </div>
             {showAddBtnPopup && <div className='fixed top-0 left-0 w-full h-full bg-black/20 z-20' style={{ display: showAddBtnPopup ? 'block' : 'none' }} onClick={() => setShowAddBtnPopup(false)}>
                 <div className='flex gap-2 mt-1 flex-col p-4 bg-white rounded shadow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2' onClick={e => e.stopPropagation()}>
-                    <input type="text" placeholder='Name' className='w-full border border-gray-300 rounded px-3 py-2 font-normal outline-none' onChange={e => setBtnDetails({ ...btnDetails, name: e.target.value })} />
-                    <input type="text" placeholder='Link' className='w-full border border-gray-300 rounded px-3 py-2 font-normal outline-none' onChange={e => setBtnDetails({ ...btnDetails, link: e.target.value })} />
-                    <input type="color" title='Button Color' className='w-16 h-10 p-0 border border-gray-300 rounded cursor-pointer' onChange={e => setBtnDetails({ ...btnDetails, color: e.target.value })} />
+                    <label className='font-medium text-[#333]'>
+                        Name
+                        <input
+                            type="text"
+                            placeholder='Name'
+                            className='w-full border border-gray-300 rounded px-3 py-2 font-normal outline-none mt-1'
+                            value={btnDetails.name}
+                            onChange={e => setBtnDetails({ ...btnDetails, name: e.target.value })}
+                        />
+                    </label>
+                    <label className='font-medium text-[#333]'>
+                        Link
+                        <input
+                            type="text"
+                            placeholder='Link'
+                            className='w-full border border-gray-300 rounded px-3 py-2 font-normal outline-none mt-1'
+                            value={btnDetails.link}
+                            onChange={e => setBtnDetails({ ...btnDetails, link: e.target.value })}
+                        />
+                    </label>
+                    <label className='font-medium text-[#333]'>
+                        Button Color<br />
+                        <input
+                            type="color"
+                            title='Button Color'
+                            className='w-16 h-10 p-0 border border-gray-300 rounded cursor-pointer mt-1'
+                            value={btnDetails.color}
+                            onChange={e => setBtnDetails({ ...btnDetails, color: e.target.value })}
+                        />
+                    </label>
                     <button
                         className='bg-[#2F6CE5] text-white font-semibold px-5 py-2 rounded-md hover:bg-blue-700 ml-auto cursor-pointer'
                         onClick={() => {
@@ -125,11 +154,20 @@ const PostForm = ({ postDetails, setPostDetails, onSubmit, onDelete }: Props) =>
                                 alert('Button name cannot be empty');
                                 return;
                             }
-                            const updatedBtns = postDetails.btns ? [...postDetails.btns, btnDetails] : [btnDetails];
-                            setPostDetails({ ...postDetails, btns: updatedBtns });
-                            setBtnDetails({ name: '', link: '', color: '#000000' });
-                            setShowAddBtnPopup(false)
-                        }}>Add</button>
+                            if (editIndex !== null && postDetails.btns) {
+                                const updatedBtns = [...postDetails.btns];
+                                updatedBtns[editIndex] = btnDetails;
+                                setPostDetails({ ...postDetails, btns: updatedBtns });
+                                setEditIndex(null);
+                                setBtnDetails({ name: '', link: '', color: '#000000' });
+                                setShowAddBtnPopup(false);
+                            } else {
+                                const updatedBtns = postDetails.btns ? [...postDetails.btns, btnDetails] : [btnDetails];
+                                setPostDetails({ ...postDetails, btns: updatedBtns });
+                                setBtnDetails({ name: '', link: '', color: '#000000' });
+                                setShowAddBtnPopup(false)
+                            }
+                        }}>{editIndex !== null ? 'Save' : 'Add'}</button>
                 </div>
             </div>}
         </>
